@@ -1,0 +1,11 @@
+---
+- name: Install fail2ban
+  apt: pkg=fail2ban state=installed update_cache=true
+
+- name: Configure fail2ban
+  command: cp jail.conf jail.local
+  args:
+    creates: /etc/fail2ban/jail.local
+    chdir: /etc/fail2ban/
+  notify:
+    - Restart fail2ban
