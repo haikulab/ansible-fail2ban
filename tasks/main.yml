@@ -1,11 +1,19 @@
 ---
-- name: Install fail2ban
-  apt: pkg=fail2ban state=installed update_cache=true
 
-- name: Configure fail2ban
-  command: cp jail.conf jail.local
-  args:
-    creates: /etc/fail2ban/jail.local
-    chdir: /etc/fail2ban/
-  notify:
-    - Restart fail2ban
+- name: Install fail2ban
+  when: ansible_os_family == 'Debian'
+  apt: pkg=fail2ban state=installed update_cache=true
+  register: fail2ban_installed
+
+- name: Checking if /var/log/nginx/error.log exists
+  stat: path=/var/log/nginx/error.log
+  register: nginx_log_status
+
+- name: Generate configurations
+  template: >
+    src=jail.local.j2
+    dest=/etc/fail2ban/jail.local
+    owner=root group=root mode=0600
+  notify: Restart fail2ban
+
+# - debug: msg="{{ system_packages_installed }}"

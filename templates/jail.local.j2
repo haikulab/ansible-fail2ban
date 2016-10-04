@@ -1,0 +1,26 @@
+[DEFAULT]
+ignoreip = {% for ip in local_ip_ranges %} {{ ip }}{% endfor %}{% if ips_to_whitelist is defined %}{% for ip in ips_to_whitelist %} {{ ip }}{% endfor %}{% endif %}
+
+{# bantime ------------------------------------------------------------ #}
+
+{% if bantime is defined %}
+bantime = {{ bantime }}
+{% endif %}
+
+{# use mail over sendmail --------------------------------------------- #}
+{% if (notification_sending is defined) and (notification_sending == 'mail') %}
+mta = mail
+{% endif %}
+
+{# Enabled "SSH-DDOS protection" -------------------------------------- #}
+{% if ssh_ddos is defined %}
+[ssh-ddos]
+enabled  = true
+{% endif %}
+
+{# Enable nginx-http-auth --------------------------------------------- #}
+{% if (nginx_http_auth is defined) and (nginx_log_status.stat.exists == true) %}
+[nginx-http-auth]
+enabled = true
+{% endif %}
+

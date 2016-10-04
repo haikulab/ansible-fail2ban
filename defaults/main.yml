@@ -1,0 +1,26 @@
+---
+# default variables
+# please overwrite in the playbook.yml
+
+# typical local ip ranges you want to be immune to being banned
+local_ip_ranges:
+  - 127.0.0.0/8
+  - 10.0.0.0/8
+
+# use ips_to_whitelist array to list additional ips
+# to be whitelisted
+# eg.
+#  ips_to_whitelist:
+#    - 1.2.3.4/32
+#    - 4.5.6.0/24
+
+# "bantime" is the number of seconds that a host is banned.
+## 1800 = 30mins
+## 1200 = 20mins
+## 300  = 5mins
+bantime: 1800
+
+# email action. Since 0.8.1 upstream fail2ban uses sendmail
+# we default to mail instead
+# everything will be sent to root@localhost
+# notification_sending: mail
