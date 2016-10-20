@@ -1,7 +1,6 @@
 ---
 
 - name: Install fail2ban
-  when: ansible_os_family == 'Debian'
   apt: pkg=fail2ban state=installed update_cache=true
   register: fail2ban_installed
 
@@ -11,9 +10,11 @@
 
 - name: Generate configurations
   template: >
-    src=jail.local.j2
-    dest=/etc/fail2ban/jail.local
+    src="{{ item.src }}"
+    dest="{{ item.dest }}"
     owner=root group=root mode=0600
+  with_items:
+    - { src: jail.local.j2, dest: /etc/fail2ban/jail.local }
   notify: Restart fail2ban
 
 # - debug: msg="{{ system_packages_installed }}"

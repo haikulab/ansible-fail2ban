@@ -16,6 +16,10 @@ mta = mail
 {% if ssh_ddos is defined %}
 [ssh-ddos]
 enabled  = true
+port     = ssh
+filter   = sshd-ddos
+logpath  = /var/log/auth.log
+maxretry = 6
 {% endif %}
 
 {# Enable nginx-http-auth --------------------------------------------- #}
